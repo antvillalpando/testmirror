@@ -1,3 +1,15 @@
+# WP6
+
+## Generating the animal dataset
+
+Run
+```sh
+./src/gen-animal-dataset.py --seed 1337 > outfile
+```
+to generate a tab-separated file containing lines of the form
+`<sentence>\t<sentence_type>\t<truth_value>` where `<truth_value>` is 1 if the sentence states a
+fact that is true and 0 otherwise, and `<sentence_type>` denotes the sentence type, e.g., `NOUN-TVERB-NOUN`.
+
 # NEASQC lib template
 
 This repository is a template for NEASQC libraries.
