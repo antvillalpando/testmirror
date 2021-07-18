@@ -1,10 +1,11 @@
 import spacy
 import numpy as np
-
+import math
+import random
 
 class Sentence:
 
-    def __init__(self, sentence, dictionary, stype):
+    def __init__(self, sentence, dictionary, stype, label):
         self.nlp = spacy.load('en_core_web_lg')
         self.sentence = self.nlp(sentence)
         self.dictionary = dictionary
@@ -15,9 +16,10 @@ class Sentence:
         self.categoriesarray = []
         self.catqubits= []
         self.stype=stype
+        self.label=label
         nwords = 0
         for token in self.sentence:
-            word = token.string.strip()
+            word = token.text.strip()
             wordcategories = self.dictionary.dictionary[word].category
             self.categoriesarray.append(wordcategories)
 
@@ -76,6 +78,43 @@ class Sentence:
 
 
 
+    def setwordparameters(self, myword, randompar=True, parameterization='Simple', layers=1, params=None):
+        wordposition = self.dictionary.dictionary[myword].pos
+        wordqubits = self.qubitsarray[wordposition]
+        gates = []
+        if randompar:
+            if parameterization == 'Simple':  # Two rotations + C-NOT gate per layer
+                for layer in range(layers):
+                    for qubit in wordqubits:
+                        ry = 2 * math.pi * random.random()
+                        rz = 2 * math.pi * random.random()
+                        gates.append(dict({'Gate': 'RY', 'Angle': ry, 'Qubit': qubit}))
+                        gates.append(dict({'Gate': 'RZ', 'Angle': rz, 'Qubit': qubit}))
+
+                    for qubit in wordqubits[:-1]:
+                        gates.append(dict({'Gate': 'CX', 'Qubit': [qubit, qubit + 1]}))
+                self.dictionary.dictionary[myword].gateset = gates
+
+        elif not randompar:
+            wordparams = params[wordposition]
+            paramid = 0
+            if parameterization == 'Simple':  # Two rotations + C-NOT gate per layer
+                for layer in range(layers):
+                    for qubit in wordqubits:
+                        gates.append(dict({'Gate': 'RY', 'Angle': wordparams[paramid], 'Qubit': qubit}))
+                        paramid += 1
+                        gates.append(dict({'Gate': 'RZ', 'Angle': wordparams[paramid], 'Qubit': qubit}))
+                        paramid += 1
+
+                    for qubit in wordqubits[:-1]:
+                        gates.append(dict({'Gate': 'CX', 'Qubit': [qubit, qubit + 1]}))
+                self.dictionary.dictionary[myword].gateset = gates
+
+
+
+    def setsentenceparameters(self, randompar=True, parameterization='Simple', layers=1, params=None):
+        for word, qword in self.dictionary.dictionary.items():
+            self.setwordparameters(word, randompar, parameterization, layers,params)
 
 
 
@@ -95,7 +134,15 @@ class Sentence:
 
 
     def getparameters(self):
-        pass
+        sentenceparams=[]
+        for word in self.dictionary.dictionary.keys():
+            wordparams=[]
+            for gate in self.dictionary.dictionary[word].gateset:
+                if (gate['Gate'] == 'RY') or (gate['Gate'] == 'RZ'):
+                    wordparams.append(gate['Angle'])
+            sentenceparams.append(wordparams)
+
+        return sentenceparams
 
 
 
