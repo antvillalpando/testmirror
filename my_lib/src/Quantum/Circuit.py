@@ -1,7 +1,8 @@
 import random
 import math
 from qat.lang.AQASM import Program, H, CNOT, RX, RY, RZ
-from qat.qpus import get_default_qpu
+from qat.qpus import PyLinalg
+
 
 
 class circuitBuilder:
@@ -15,37 +16,12 @@ class circuitBuilder:
         elif random:
             self.random = True
 
-    def setwordparameters(self, myword, mysentence):
-        wordposition = mysentence.dictionary.dictionary[myword].pos
-        wordqubits = mysentence.qubitsarray[wordposition]
-        gates = []
-        if self.random:
-            if self.parameterization == 'Simple':  # Two rotations + C-NOT gate per layer
-                for layer in range(self.layers):
-                    for qubit in wordqubits:
-                        ry = 2 * math.pi * random.random()
-                        rz = 2 * math.pi * random.random()
-                        gates.append(dict({'Gate': 'RY', 'Angle': ry, 'Qubit': qubit}))
-                        gates.append(dict({'Gate': 'RZ', 'Angle': rz, 'Qubit': qubit}))
-                    for qubit in wordqubits[:-1]:
-                        gates.append(dict({'Gate': 'CX', 'Qubit': [qubit, qubit + 1]}))
-                mysentence.dictionary.dictionary[myword].gateset = gates
-
-        elif not self.random:
-            pass  # load vocabulary parameters
-
-    def setsentenceparameters(self, mysentence):
-        for word, qword in mysentence.dictionary.dictionary.items():
-            self.setwordparameters(word, mysentence)
-
     def executecircuit(self):
         quantumcircuit = self.qlmprogram.to_circ()
         job = quantumcircuit.to_job()
-        qpu = get_default_qpu()
+        qpu = PyLinalg()
         result = qpu.submit(job)
         self.result = result
-        for sample in result:
-            pass
 
     def preparewords(self, sentence, my_program):
 
@@ -75,7 +51,7 @@ class circuitBuilder:
         return my_program
 
 
-    def createcircuit2(self, sentence):
+    def createcircuit(self, sentence):
         totqubits = sentence.qubitsarray[-1][-1] + 1
         my_program = Program()
         my_program.qalloc(totqubits)

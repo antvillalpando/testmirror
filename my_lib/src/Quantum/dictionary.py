@@ -50,7 +50,7 @@ class QuantumDict:
     def addwords(self, mysentence):
         pos=0
         for token in mysentence.sentence:
-            wordstring = token.string.strip()
+            wordstring = token.text.strip()
             if wordstring not in self.dictionary.keys():
 
                 self.dictionary[wordstring] = QuantumWord(token)
@@ -68,12 +68,12 @@ class QuantumWord:
 
     def __init__(self,token):
         self.token = token
-        self.word = token.string.strip()
+        self.word = token.text.strip()
         self.lemma = self.token.lemma_
 
     def setwordproperties(self, mydict, mysentence):
 
-        wordtype = mysentence.nlp(self.token.string)[0].pos_
+        wordtype = mysentence.nlp(self.token.text)[0].pos_
         if (wordtype == "NOUN") or (wordtype == "PROPN"):
             mydict.dictionary[self.word].nqubits = mydict.qn
         elif wordtype == "ADJ":
