@@ -6,8 +6,9 @@ import random
 import json
 from sklearn.model_selection import train_test_split
 from gen_animal_dataset import generate_dataset
+from typing import Union
 
-def unpack_data(data):
+def unpack_data(data: list[tuple[str, str, bool]]) -> list[dict[str, Union[str, bool]]]:
     return [{
         "sentence": sentence,
         "sentence_type": sentence_type,
@@ -69,7 +70,6 @@ def main():
 
     with open(filename, "w", encoding="utf-8") as f:
         json.dump(ds, f, ensure_ascii=False, indent=2)
-        
 
 
 
