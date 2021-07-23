@@ -2,13 +2,14 @@
 
 import argparse
 import random
+from typing import Optional
 
 # Much of this is taken from
 # https://github.com/oxford-quantum-group/discopy/blob/main/docs/notebooks/functorial_language_model.ipynb
 
 # transitive sentences
 # fmt: off
-trans_corpus = {
+trans_corpus: dict[str, dict[str, list[str]]] = {
     "dog": {
         "chases": ["cat", "fox"],
         "bites": ["cat", "fox", "bone"],
@@ -45,7 +46,7 @@ trans_corpus = {
 # fmt: on
 
 # fmt: off
-trans_corpus_false = {
+trans_corpus_false: dict[str, dict[str, list[str]]] = {
     "dog": {
         "flees": ["cat", "fox"],
         "bites": ["grain", "krill"],
@@ -83,7 +84,7 @@ trans_corpus_false = {
 
 # intransitive sentences
 # fmt: off
-itrans_corpus = {
+itrans_corpus: dict[str, dict[str, dict[str, list[str]]]] = {
     "dog": {
         "runs": {
             "on": ["land"],
@@ -149,7 +150,7 @@ itrans_corpus = {
 # fmt: on
 
 # fmt: off
-itrans_corpus_false = {
+itrans_corpus_false: dict[str, dict[str, dict[str, list[str]]]] = {
     "dog": {
         "runs": {
             "in": ["water"],
@@ -219,8 +220,16 @@ itrans_corpus_false = {
 # fmt: on
 
 
-def generate_dataset(seed=None):
-    dataset = []
+def generate_dataset(seed: Optional[int] = None) -> list[tuple[str, str, bool]]:
+    '''Generates a list of sentences, sentence types and their truth values.
+    Sentences consist of facts about animals.
+
+    @param seed: if a seed is provided, the returned list is shuffled; the seed
+        is used to initialize the random number generator
+    @return: the dataset -- a list of
+        sentence, sentence type, sentence truth value tuples
+    '''
+    dataset: list[tuple[str, str, bool]] = []
 
     for corpus, truth_value in [(trans_corpus, True), (trans_corpus_false, False)]:
         for subj, verb_dict in corpus.items():
@@ -229,8 +238,11 @@ def generate_dataset(seed=None):
                     dataset.append((f"{subj} {verb} {dobj}", "NOUN-TVERB-NOUN", truth_value))
 
     for corpus, truth_value in [(itrans_corpus, True), (itrans_corpus_false, False)]:
-        for subj, verb_dict in corpus.items():
-            for verb, prep_dict in verb_dict.items():
+        for subj, iverb_dict in corpus.items():  # can't reuse the verb_dict
+                                                 # variable here because mypy
+                                                 # complains about its type
+                                                 # changing
+            for verb, prep_dict in iverb_dict.items():
                 # Given that "seal swims in water 1" we can infer that "seal swims 1",
                 # but from "dog in water 0" we cannot infer that "dog runs 0", hence
                 # we add the short "subj verb" sentences only for true facts or when
@@ -251,7 +263,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="""
             Generate a simple dataset with facts about animals.
-            The output format is "<sentence>\\t<truth_value>"
+            The output format is "<sentence>\\t<sentence_type>\\t<truth_value>"
             where <truth_value> is 1 if the fact is true and 0 otherwise."""
     )
     parser.add_argument(
