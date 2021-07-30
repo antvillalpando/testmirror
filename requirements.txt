@@ -7,7 +7,7 @@ scipy
 pytest
 jupyterlab
 
-# i've removed tensorflow for now, because it requires a lower python version
+# i've removed tensorflow for now, because it requires a lower numpy version
 # which is incompatible with jupyterlab (or something else)
 # tensorflow
 scikit-learn
