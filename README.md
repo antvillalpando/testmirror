@@ -49,6 +49,22 @@ Dependencies section above).
 python -m spacy download en_core_web_lg
 ```
 
+### Running
+To run the the notebooks, start jupyter lab and navigate to the notebooks in
+[misc/notebooks/](./misc/notebooks/)
+
+```sh
+# Make sure the virtual environement is activated
+. ./venv/bin/activate
+
+# Start jupyter lab and follow the instructions in the console
+# output to open jupyter lab in the browser
+jupyter-lab
+```
+
+### More information
+Some more information about the notebooks is provided in
+[misc/notebooks/README.md](./misc/notebooks/README.md)
 
 ## Generating the animal dataset
 Manual dataset generation isn't necessary for running the Jupyter notebooks.
