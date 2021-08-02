@@ -12,7 +12,7 @@ To run the notebooks you must install some software dependencies and download a
 classical NLP modules currently cannot share a common set of software
 dependencies and, as a result, need to be run in separete Python environments.
 The instructions below describe the steps to set up an environment for the
-**quantum NLP module*** using the [requirements.txt](./requirements.txt) file in
+**quantum NLP module** using the [requirements.txt](./requirements.txt) file in
 the project's root. The steps for setting up an environement for the **classical
 NLP module** are identical except for the fact that a different requirements
 file –
