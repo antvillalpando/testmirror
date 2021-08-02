@@ -1,3 +1,3 @@
 # Classical NLP
 
-An explanation of this module
+A module implementing classical processing of the dataset.
