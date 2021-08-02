@@ -8,7 +8,16 @@ sentence classification task).
 
 ### Setup
 To run the notebooks you must install some software dependencies and download a
-`spacy` language model.
+`spacy` language model. Due to some library incompatibilities, the quantum and
+classical NLP modules currently cannot share a common set of software
+dependencies and, as a result, need to be run in separete Python environments.
+The instructions below describe the steps to set up an environment for the
+**quantum NLP module*** using the [requirements.txt](./requirements.txt) file in
+the project's root. The steps for setting up an environement for the **classical
+NLP module** are identical except for the fact that a different requirements
+file –
+[./misc/notebooks/classical/requirements.txt](./misc/notebooks/classical/requirements.txt)
+– should be used.
 
 #### Dependencies
 We recommend using `virtualenv` or `anaconda` to create an isolated environment
@@ -36,7 +45,7 @@ We've tested that the code works using Python 3.9. Earlier versions might not
 work on Linux due to incompatibility with `myqlm`.
 
 #### Spacy language model
-Some of the tools used in the code require a language model to be downloaded to
+Some of the tools used in the quantum NLP module require a language model to be downloaded to
 the users system. To do it automatically, execute the following command into the
 virtual environment after the dependencies have been installed (see the
 Dependencies section above).
