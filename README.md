@@ -11,11 +11,11 @@ To run the notebooks you must install some software dependencies and download a
 `spacy` language model.
 
 #### Dependencies
-We recommend using `virtualenv` or `anaconda` to create a isolated environment
+We recommend using `virtualenv` or `anaconda` to create an isolated environment
 for the project's dependencies. Here are instructions for `virtualenv`.
 
 ```sh
-# Install virtualenv using your distributions package manager or pip, e.g.,
+# Install virtualenv using your distribution's package manager or pip, e.g.,
 apt install virtualenv  # if using Ubuntu
 
 # Create a new virtual environment called, e.g., venv.
