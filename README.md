@@ -82,7 +82,8 @@ using the following commands.
 
 Run
 ```sh
-./src/gen-animal-dataset.py --seed 1337 > outfile
+# Choose a seed number, e.g, 1337, to deterministically randomize the sentence order
+./my_lib/src/DataPreparation/gen_animal_dataset.py --seed 1337 > outfile
 ```
 to generate a tab-separated file containing lines of the form
 `<sentence>\t<sentence_type>\t<truth_value>` where `<truth_value>` is 1 if the sentence states a
