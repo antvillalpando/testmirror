@@ -31,7 +31,7 @@ apt install virtualenv  # if using Ubuntu
 # This will create a directory called venv in the project root which will
 # contain all of the packages installed in the following steps. It can be safelly
 # delted to get rid of the these packages.
-virtualenv create venv
+virtualenv venv
 
 # Activate the newly created environment
 . ./venv/bin/activate
