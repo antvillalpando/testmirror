@@ -2,14 +2,14 @@
 
 import argparse
 import random
-from typing import Optional
+from typing import Optional, Dict, List, Tuple
 
 # Much of this is taken from
 # https://github.com/oxford-quantum-group/discopy/blob/main/docs/notebooks/functorial_language_model.ipynb
 
 # transitive sentences
 # fmt: off
-trans_corpus: dict[str, dict[str, list[str]]] = {
+trans_corpus: Dict[str, Dict[str, List[str]]] = {
     "dog": {
         "chases": ["cat", "fox"],
         "bites": ["cat", "fox", "bone"],
@@ -46,7 +46,7 @@ trans_corpus: dict[str, dict[str, list[str]]] = {
 # fmt: on
 
 # fmt: off
-trans_corpus_false: dict[str, dict[str, list[str]]] = {
+trans_corpus_false: Dict[str, Dict[str, List[str]]] = {
     "dog": {
         "flees": ["cat", "fox"],
         "bites": ["grain", "krill"],
@@ -84,7 +84,7 @@ trans_corpus_false: dict[str, dict[str, list[str]]] = {
 
 # intransitive sentences
 # fmt: off
-itrans_corpus: dict[str, dict[str, dict[str, list[str]]]] = {
+itrans_corpus: Dict[str, Dict[str, Dict[str, List[str]]]] = {
     "dog": {
         "runs": {
             "on": ["land"],
@@ -150,7 +150,7 @@ itrans_corpus: dict[str, dict[str, dict[str, list[str]]]] = {
 # fmt: on
 
 # fmt: off
-itrans_corpus_false: dict[str, dict[str, dict[str, list[str]]]] = {
+itrans_corpus_false: Dict[str, Dict[str, Dict[str, List[str]]]] = {
     "dog": {
         "runs": {
             "in": ["water"],
@@ -220,7 +220,7 @@ itrans_corpus_false: dict[str, dict[str, dict[str, list[str]]]] = {
 # fmt: on
 
 
-def generate_dataset(seed: Optional[int] = None) -> list[tuple[str, str, bool]]:
+def generate_dataset(seed: Optional[int] = None) -> List[Tuple[str, str, bool]]:
     '''Generates a list of sentences, sentence types and their truth values.
     Sentences consist of facts about animals.
 
@@ -229,7 +229,7 @@ def generate_dataset(seed: Optional[int] = None) -> list[tuple[str, str, bool]]:
     @return: the dataset -- a list of
         sentence, sentence type, sentence truth value tuples
     '''
-    dataset: list[tuple[str, str, bool]] = []
+    dataset: List[Tuple[str, str, bool]] = []
 
     for corpus, truth_value in [(trans_corpus, True), (trans_corpus_false, False)]:
         for subj, verb_dict in corpus.items():
