@@ -82,6 +82,11 @@ class NNClassifier:
 
 
     def train(self, trainX, trainY):
+        '''Trains the model.
+        @param trainX: training data
+        @param trainY: training targets (labels)
+        @return: training history data as returned by Keras
+        '''
         if self.params["model"] == "CNN":
             self.model = NNClassifier.createModelCNN(**self.params)
         elif self.params["model"] == "FFNN":
@@ -92,7 +97,7 @@ class NNClassifier:
         self.model.compile(optimizer=optimizer,
                 loss='categorical_crossentropy',
                 metrics=['accuracy'])
-        self.model.fit(trainX, trainY, epochs=self.params["epochs"], verbose=2,)
+        return self.model.fit(trainX, trainY, epochs=self.params["epochs"], verbose=2,)
                   #callbacks=callbacks)
 
     def predict(self, testX):
